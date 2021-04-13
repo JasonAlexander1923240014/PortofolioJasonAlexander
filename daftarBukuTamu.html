@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buku Tamu</title>
+</head>
+<body onload= "tampilkehadiran()">
+    <h1>Buku Tamu</h1>
+    <form onsubmit = "simpankehadiran()">
+        <input type="text" name="" id="nama" placeholder="Nama ">
+        <input type="text" name="" id="email" placeholder="Email ">
+        <input type="text" name="" id="pesan" placeholder="Pesan ">
+
+        <button type="submit">Simpan</button>
+        <button onclick = "clearLocalStorage()">Clear All </button>
+    </form>
+    <h2>Daftar Tamu</h2>
+    <div id="daftar"></div>
+    <table border="1" width="500" >
+        <tr>
+            <td>Nama</td>
+            <td>Email</td>
+            <td>Pesan</td>
+        </tr>
+    </table>
+    <script>
+        let kehadiran = [];
+        const simpankehadiran = () => {
+            let nama = document.getElementById("nama").value;
+            let email = document.getElementById("email").value;
+            let pesan = document.getElementById("pesan").value;
+
+            let tamu = {nama: nama, email: email, pesan: pesan };
+            let kehadiranlama = localStorage.getItem("kehadiran");
+            if(kehadiranlama !=null){
+                kehadiran = JSON.parse(kehadiranlama);// mengubah string menjadi array/object
+
+            }
+            kehadiran.push(tamu);
+            localStorage.setItem("kehadiran", JSON.stringify(kehadiran));// mengubah object/array menjadi string
+        }
+
+        const tampilkehadiran = () => {
+            let table = document.getElementsByTagName("table")[0];
+
+            
+            let datakehadiran = localStorage.getItem("kehadiran")
+            if(datakehadiran != null){
+                datakehadiran = JSON.parse(datakehadiran);
+                datakehadiran.forEach(element => {
+                    let row = table.insertRow();
+                    let colnama = row.insertCell(0);
+                    let colemail = row.insertCell(1);
+                    let colpesan = row.insertCell(2);
+
+                    colnama.innerHTML = element.nama;
+                    colemail.innerHTML = element.email;
+                    colpesan.innerHTML = element.pesan;
+
+
+                });
+
+            }
+        } 
+        const clearLocalStorage = () => {
+            localStorage.clear();
+        }
+    </script>
+</body>
+</html>
